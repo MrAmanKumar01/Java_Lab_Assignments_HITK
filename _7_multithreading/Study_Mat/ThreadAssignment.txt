@@ -1,0 +1,430 @@
+/*Write multithreaded program that continuously prints the strings “ping” and
+“PONG” in the console at random distances at intervals of one second. Use two
+threads one for “ping” and another for “PONG”.*/
+
+import java.util.Random;
+class PingPong {
+	int c;
+	boolean mySwitch;
+
+	PingPong() {
+		c = 0;
+		mySwitch = true;
+	}
+
+	synchronized void ping() {
+		if (!mySwitch)
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		System.out.print("ping");
+		c += 4;
+		for (int i = 0; i < new Random().nextInt(100); i++) {
+			System.out.print(" "); 					// prints random no. of space
+			c++; 									// increasing character c
+			if (c >= 100) { 						// wraps if character c is more than 100
+				System.out.println();
+				c = 0;
+			}
+		}
+		mySwitch = false;
+		notify();
+	}
+
+	synchronized void pong() {
+		if (mySwitch)
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		System.out.print("PONG");
+		c += 4;
+		for (int i = 0; i < new Random().nextInt(100); i++) {
+			System.out.print(" "); 					// prints random no. of space
+			c++; 									// increasing character c
+			if (c >= 100) { 						// wraps if character c is more than 100
+				System.out.println();
+				c = 0;
+			}
+		}
+		mySwitch = true;
+		notify();
+	}
+}
+
+class Ping extends Thread {
+	PingPong p;
+
+	public Ping(PingPong p) {
+		this.p = p;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			p.ping();
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+class Pong extends Thread {
+	PingPong p;
+
+	public Pong(PingPong p) {
+		this.p = p;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			p.pong();
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+public class A2 {
+	public static void main(String[] args) {
+		PingPong p = new PingPong();
+
+		new Ping(p).start();
+		new Pong(p).start();
+	}
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+/*Write a program to sort a list of strings using multithreading. Create one of the
+threads that take a string as input from the user, another thread that sorts the
+strings and finally another thread that displays the sorted list of strings. Each of
+the input, sort, and display methods is to be synchronized.*/
+
+import java.util.Scanner;
+class MyStrings {
+	String s[];
+	boolean isSorted = false;
+	static Scanner scanner;
+
+	MyStrings() {
+		s = null;
+		scanner = new Scanner(System.in);
+	}
+
+	synchronized void input() { // responsible for taking input
+		System.out.print("Enter no. of Strings: ");
+		s = new String[scanner.nextInt()];
+		System.out.println("Enter the Strings:-");
+		for (int i = 0; i < s.length; i++)
+			s[i] = scanner.next();
+	}
+
+	synchronized void sort() { // responsible for sorting 
+		for (int i = 0; i < s.length; i++) {
+			int j;
+			String t = s[i];
+			for (j = i - 1; j >= 0 && (s[j].compareToIgnoreCase(t) > 0); j--)
+				s[j + 1] = s[j];
+			s[j + 1] = t;
+		}
+		isSorted = true;
+		notify(); // notifies when string array is sorted
+	}
+
+	synchronized void display() { // responsible for display
+		if (!isSorted) {
+			try {
+				wait(); // waits for the string array to be sorted
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		for (String i : s)
+			System.out.println(i);
+	}
+}
+
+class InputStrings extends Thread {
+	MyStrings obj;
+
+	public InputStrings(MyStrings obj) {
+		this.obj = obj;
+	}
+
+	@Override
+	public void run() { // thread for input
+		obj.input();
+	}
+}
+
+class SortStrings extends Thread {
+	MyStrings obj;
+
+	public SortStrings(MyStrings obj) {
+		this.obj = obj;
+	}
+
+	@Override
+	public void run() { // thread for sort
+		obj.sort();
+	}
+}
+
+class DisplayStrings extends Thread {
+	MyStrings obj;
+
+	public DisplayStrings(MyStrings obj) {
+		this.obj = obj;
+	}
+
+	@Override
+	public void run() { // thread for display
+		obj.display();
+	}
+}
+
+public class A3 {
+	public static void main(String[] args) {
+		MyStrings obj = new MyStrings();
+		new InputStrings(obj).start();
+		new SortStrings(obj).start();
+		new DisplayStrings(obj).start();
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*Inherit a class from Thread and override the run( ) method. Inside run( ), print a
+message, and then call sleep( ). Repeat this three times, then return from run( ).
+Put a start-up message in the constructor and override finalize( ) to print a shut-
+down message. Make a separate thread class that calls System.gc( ) and
+System.runFinalization( ) inside run( ), printing a message as it does so. Make
+several thread objects of both types and run them to see what happens.*/
+
+class TripleSleep extends Thread {
+	static int count; 			// counts the no. of threads created
+	int tId; 					// thread id
+	Thread t;
+
+	TripleSleep(Thread t) {
+		count++;
+		tId = count;
+		System.out.println("Initializing object " + tId);
+		this.t = t;
+	}
+
+	protected void finalize() {
+		System.out.println("Killing object " + tId);
+	}
+
+	public void run() {
+		try {
+			System.out.println("Object " + tId + " says 1");
+			sleep(1500);
+			System.out.println("Object " + tId + " says 2");
+			sleep(1000);
+			System.out.println("Object " + tId + " says 3");
+			sleep(500);
+		} catch (InterruptedException e) {
+			e.getMessage();
+		}
+		t.start(); // calling Finalizer thread 
+	}
+}
+
+class Finalizer extends Thread {
+	static int count; // counts the no. of threads created
+	int tId; // thread id
+
+	public Finalizer() {
+		count++;
+		tId = count;
+	}
+
+	public void run() {
+		System.out.println("Running Finalizer" + tId + "...");
+		System.runFinalization();
+		System.out.println("Running Garbage Collector" + tId + "...");
+		System.gc();
+	}
+}
+
+public class A4 {
+	public static void main(String[] args) {
+		// Finalizer
+		Finalizer f1 = new Finalizer();
+		Finalizer f2 = new Finalizer();
+		Finalizer f3 = new Finalizer();
+
+		// TripleSleep
+		TripleSleep t1 = new TripleSleep(f1);
+		TripleSleep t2 = new TripleSleep(f2);
+		TripleSleep t3 = new TripleSleep(f3);
+
+		// thread calls
+		t1.start();
+		t2.start();
+		t3.start();
+
+	}
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+/*Create two Thread subclasses, one with a run( ) that starts up, captures the
+reference of the second Thread object and then calls wait( ). The other class’
+run( ) should call notifyAll( ) for the first thread after some number of seconds
+have passed, so the first thread can print a message.*/
+
+class Resource {
+	synchronized void waiter() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	synchronized void notifier() {
+		notifyAll();
+	}
+}
+
+class Waiter extends Thread {
+	Thread t;
+	Resource r;
+
+	public Waiter(Thread t, Resource r) {
+		this.t = t;
+		this.r = r;
+	}
+
+	@Override
+	public void run() {
+		t.start();
+		System.out.println("Waiting to be notified");
+		r.waiter();
+		System.out.println("Waiting Over");
+	}
+}
+
+class Notifier extends Thread {
+	Resource r;
+
+	public Notifier(Resource r) {
+		this.r = r;
+	}
+
+	public void run() {
+		try {
+			sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("To be notified now");
+		r.notifier();
+	}
+}
+
+public class A5 {
+	public static void main(String[] args) {
+		// Resource
+		Resource r = new Resource();
+
+		// notifier thread
+		Notifier ntfr = new Notifier(r);
+
+		// calling waiter thread
+		new Waiter(ntfr, r).start();
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Suppose that two threads “t1” and “t2” access a shared integer “x”. Thread “t1” indefinitely increases “x” and “t2” indefinitely prints the value of “x”. 
+That is the threads run in an infinite loop.However, thread “t1” must not increase “x” till that value of “x” is printed by “t2” and “t2” must not 
+print the same value of “x” more than once.
+
+Define the classes for implementing “t1” and “t2”. Write appropriate methods for accomplishing the above.
+*/
+
+class Xval {
+	int x;
+	boolean isIncr = false;
+
+	public Xval() {
+		x = 0;
+	}
+
+	synchronized void incr() {
+		if (isIncr)
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		x++;
+		isIncr = true;
+		notify();
+	}
+
+	synchronized void disp() {
+		if (!isIncr)
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		System.out.println("x: " + x);
+		isIncr = false;
+		notify();
+	}
+}
+
+public class A6 {
+	public static void main(String[] args) {
+		Xval x = new Xval();
+
+		// Display
+		Thread disp = new Thread() {
+			@Override
+			public void run() {
+				while (true) {
+					x.incr();
+					try {
+						sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+
+		// Increment
+		Thread incr = new Thread() {
+			@Override
+			public void run() {
+				while (true) {
+					x.disp();
+					try {
+						sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+
+		disp.start();
+		incr.start();
+	}
+}

@@ -1,0 +1,260 @@
+class Student     			    //class
+{
+	int id;				    //Instance Variable
+	String name;
+	double marks;	
+	
+}
+
+public class Class_Object {
+
+	public static void main(String[] args) {
+		
+		Student stu= new Student(); //Create Object [  Class_name object_name = new Class_name(); ]
+		
+		stu.id=2;
+		stu.name="Sougata";
+		stu.marks=78.50;
+		
+		System.out.println("Id "+stu.id);
+		System.out.println("Name "+stu.name);
+		System.out.println("Marks "+stu.marks);
+		
+	}
+
+}
+
+=====================================================================================================================================
+class Student     			    //class
+{
+	int id;				    //Instance Variable
+	String name;
+	double marks;
+	
+	void set() {         		   //Method
+		id=2;
+		name="Sougata";
+		marks=78.50;
+	}
+	
+	void get() {
+		System.out.println("Id "+id);
+		System.out.println("Name "+name);
+		System.out.println("Marks "+marks);
+	}
+	
+}
+
+public class Class_Object {
+
+	public static void main(String[] args) {
+		
+		Student s1= new Student();			//Create Object [  Class_name object_name = new Class_name(); ]
+		s1.set();
+		s1.get();
+		
+	}
+
+}
+
+=========================================================================================================================================
+
+class Student    						       //class
+{
+	int id;								 //Instance Variable
+	String name;
+	double marks;
+	
+	void set(int i,String n,double m) {    //Method       
+		id=i;
+		name=n;
+		marks=m;
+	}
+	
+	void get() {
+		System.out.println("Id "+id);
+		System.out.println("Name "+name);
+		System.out.println("Marks "+marks);
+	}
+	
+}
+
+//Driver Class
+public class Class_Object {
+
+	public static void main(String[] args) {
+		
+		Student s1= new Student();			//Create Object [  Class_name object_name = new Class_name(); ]
+		s1.set(2,"Sougata",78.50);
+		s1.get();
+				
+		Student s2= new Student();			//Create Object [  Class_name object_name = new Class_name(); ]
+		s2.set(3,"Sayan",60.50);
+		s2.get();
+		
+	}
+
+}
+
+
+==========================================================================================================================================
+
+class Student    						 	//class
+{
+	int id;								//Instance Variable
+	String name;
+	double marks;
+	
+	Student(int i,String n,double m) {    			//Parameterized Constructor       
+		id=i;
+		name=n;
+		marks=m;
+	}
+	
+	void get() {
+		System.out.println("Id "+id);
+		System.out.println("Name "+name);
+		System.out.println("Marks "+marks);
+	}
+	
+}
+
+
+//Driver Class
+public class Class_Object {
+
+	public static void main(String[] args) {
+		
+		Student s1= new Student(2,"Sougata",78.50);			//Create Object [  Class_name object_name = new Class_name(); ]
+		s1.get();
+		
+		
+		Student s2= new Student(3,"Sayan",60.50);			//Create Object [  Class_name object_name = new Class_name(); ]
+		s2.get();
+		
+	}
+
+}
+
+=================================================================================
+
+class Student    						 	//class
+{
+	int id;								//Instance Variable
+	String name;
+	double marks;
+	
+	Student(int id,String name,double marks) {    			//Parameterized Constructor       
+		this.id=id;
+		this.name=name;
+		this.marks=marks;
+	}
+	
+	void get() {
+		System.out.println("Id "+id);
+		System.out.println("Name "+name);
+		System.out.println("Marks "+marks);
+	}
+	
+}
+
+
+//Driver Class
+public class Class_Object {
+
+	public static void main(String[] args) {
+		
+		Student s1= new Student(2,"Sougata",78.50);			//Create Object [  Class name object_name = new Class name(); ]
+		s1.get();
+		
+		
+		Student s2= new Student(3,"Sayan",60.50);			//Create Object [  Class name object_name = new Class name(); ]
+		s2.get();
+		
+	}
+
+}
+
+
+=====================================================================================================================================
+package IntrotoJava;
+class Employee{
+	String empName;   									 //Instance Variable 
+	int empId;
+	double empSalary;
+	
+	Employee(String empName,int empId ,double empSalary) {
+		this.empName=empName;
+		this.empId=empId;
+		this.empSalary=empSalary;
+	}
+	
+	String get() {     										//method
+		return "EmpName : "+empName+" EmpId : "+empId+" Empsalary : "+empSalary;
+		
+	}
+}
+
+public class MainEmp 
+{     
+	public static void main(String[] args) {
+		
+		Employee emp= new Employee("Ishani",12,45000); // create Object
+		System.out.println(emp.get());
+		
+		Employee emp1= new Employee("Sohini",14,51000); // create Object
+		System.out.println(emp1.get());
+	
+	}
+
+}
+
+
+
+=============================================================================================================================================================
+
+
+
+/*      Array of Objects in Java
+	Java is an object-oriented programming language. Most of the work done with the help of objects. We know that an array is a collection of the same 
+	data type that dynamically creates objects and can have elements of primitive types. Java allows us to store objects in an array. In Java, 
+	the class is also a user-defined data type.
+	An array that conations class type elements are known as an array of objects. It stores the reference variable of the object.
+*/
+
+
+//Employee class with empId and name as attributes
+
+class Employee{  
+  	int empId;
+  	String name;
+  
+  	Employee(inteid, String n){    //Employee class constructor
+     		empId = eid;
+     		name = n;
+  	}
+ 
+ 	void showData(){
+		System.out.print("EmpId = "+empId + "  " + " Employee Name = "+name);
+		System.out.println();
+ 	}
+}
+
+class Main{
+   	public static void main(String args[]){     
+	 	//create array of employee object  
+     		Employee obj[] = new Employee[2] ;
+ 
+     
+		 //create & initialize actual employee objects using constructor
+     		obj[0] = new Employee(100,"ABC");
+     		obj[1] = new Employee(200,"XYZ");
+ 
+     
+		 //display the employee object data
+     		System.out.println("Employee Object 1:");
+     		obj[0].showData();
+     		System.out.println("Employee Object 2:");
+     		obj[1].showData();
+  	}
+}

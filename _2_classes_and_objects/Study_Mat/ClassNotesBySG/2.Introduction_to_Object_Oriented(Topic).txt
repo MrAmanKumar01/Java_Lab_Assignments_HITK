@@ -1,0 +1,34 @@
+Object Oriented Programming concept
+
+Class(Instance Variable,Method)
+Object(Instance of Class)
+
+Abstraction
+Message Passing
+ 
+Encapsulation
+Polymorphism (same name with many form)
+  Method Overloading [abs(float)/abs(int)/abs(long int)]
+  Method Overriding
+Inheritance(Generalization) and (Specialization)
+
+Association
+Aggregation
+Composition
+
+Coupling
+Cohesion
+
+
+			
+
+ 
+
+            
+
+
+
+
+
+		
+

@@ -1,0 +1,29 @@
+Introduction to Thread
+Java Thread Model 
+Thread Piority
+Synchronization
+Messaging
+
+
+
+
+The Thread Class 
+The Runnable Interface
+Thread Group
+Demon Thread
+Priority of a Thread 
+Synchronization
+Inter Thread Communication 
+Dead Locked
+
+Methods
+--------
+star(),run()
+getName(),setName(),getPriority(),setPriority()
+yield(),Join(),sleep()
+isDemon,setDemon()
+wait()
+notify()
+notifyAll()
+
+

@@ -1,0 +1,220 @@
+========================================================
+/* Method Overloading*/
+
+class Area_cal
+{
+    double area(int l,int b)
+    {
+        return l*b;
+    }
+    double area(int r)
+    {
+        return 3.14*r*r;
+    }
+    
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+	    Area_cal rect = new Area_cal();
+	    System.out.println("Area of rectangle : "+rect.area(2,3)); 
+	    
+	    Area_cal cir = new Area_cal();
+	    System.out.println("Area of Circle : "+ cir.area(7)); 
+	}
+}
+
+
+===========================================================================
+/* Constructor Overloading */
+
+class Student    						 //classc
+{
+	int id;								//Instance Variable
+	String name;
+	double marks;
+	
+	Student(){
+		id=0;
+		name=null;
+		marks=0;
+	}
+	
+	Student(int id,String name,double marks) {    //Parameterized Constructor       
+		this.id=id;
+		this.name=name;
+		this.marks=marks;
+	}
+	
+	void get() {
+		System.out.println("Id "+id);
+		System.out.println("Name "+name);
+		System.out.println("Marks "+marks);
+	}
+	
+}
+
+
+//Driver Class
+public class Class_Object {
+
+	public static void main(String[] args) {
+		
+		Student s1= new Student(2,"Sougata",78.50);			//Create Object [  Class name object_name = new Class name(); ]
+		s1.get();
+		
+		
+		Student s2= new Student(3,"Sayan",60.50);			//Create Object [  Class name object_name = new Class name(); ]
+		s2.get();
+		
+		
+		Student s3= new Student();			                //Create Object [  Class name object_name = new Class name(); ]
+		s3.get();
+		
+	}
+
+}
+
+
+================================================================================================
+/*Objects as Parameters*/
+class Complex
+{
+    int real;
+    int img;
+    Complex(){}
+    
+    Complex(int r,int i){
+        real=r;
+        img=i;
+    }
+    
+    void add(Complex c1,Complex c2)
+    {
+        real = c1.real + c2.real;
+        img = c1.img + c2.img;
+    }
+    void dislay()
+    {
+       System.out.println(real+" + "+img+"i");
+    }
+    
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+	    Complex c1 = new Complex(2,3);  //2 + 3i
+	    Complex c2 = new Complex(4,5);  //4 + 5i
+	    Complex c3 = new Complex();
+	    c3.add(c1,c2);
+	    c3.dislay();
+	}
+}
+
+====================================================================================
+/* return object using method */ 
+class Complex
+{
+    int real;
+    int img;
+    Complex(){}
+    
+    Complex(int r,int i){
+        real=r;
+        img=i;
+    }
+    
+    Complex add(Complex c1,Complex c2)
+    {
+	Complex c3 = new Complex();
+        c3.real = c1.real + c2.real;
+        c3.img =  c1.img + c2.img;
+	return c3;
+    }
+    void dislay()
+    {
+       System.out.println(real+" + "+img+"i");
+    }
+    
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+	    Complex c1 = new Complex(2,3);  //2 + 3i
+	    Complex c2 = new Complex(4,5);  //4 + 5i
+	    Complex c3 = new Complex();
+	    c3=c3.add(c1,c2);
+	    c3.dislay();
+	}
+}
+========================================================================
+/*Private member */
+
+
+class Test
+{
+    private int i;
+    
+    void set (int i){
+        this.i=i;
+    }
+    
+    void dislay()
+    {
+       System.out.println(i);
+    }
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+	    Test c1 = new Test();
+	    c1.set(2);
+	    c1.dislay();
+	}
+}
+
+
+
+=======================================================================================
+static (Instance Variable,Method,Class)	
+
+/*Under Standing static */
+
+class Bank
+{
+    static int token;
+    static void showName ()
+    {
+        System.out.println("SBI");
+    }
+    
+    void dislay()
+    {
+       System.out.println(token);
+       token++;
+    }
+    
+    static {
+        token=1;
+    }
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+	    Bank.showName();
+	    
+	    Bank c1 = new Bank();
+	    c1.dislay();
+	    
+	    Bank c2 = new Bank();
+	    c2.dislay();
+	    
+	    Bank c3 = new Bank();
+	    c3.dislay();
+	}
+}
